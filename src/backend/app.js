@@ -5,8 +5,9 @@ const path = require("path");
 
 const mealsRouter = require("./api/meals");
 const buildPath = path.join(__dirname, "../../dist");
-const port = process.env.PORT || 3000;
+const port = process.env.CLIENT_PORT || 3000;
 const cors = require("cors");
+const knex = require("./database");
 
 // For week4 no need to look into this!
 // Serve the built client html
@@ -20,11 +21,61 @@ app.use(express.json());
 app.use(cors());
 
 router.use("/meals", mealsRouter);
+//future-meals
+app.get("/future-meals", async (req, res) => {
+  const [rows] = await knex.raw(
+    "SELECT `id`, `title`, `when` FROM Meal WHERE `when` >(SELECT NOW())"
+  );
+
+  res.json({
+    futureMeals: rows,
+  });
+});
+//past-meals
+app.get("/past-meals", async (req, res) => {
+  const [rows] = await knex.raw(
+    "SELECT `id`, `title`, `when` FROM Meal WHERE `when` < (SELECT NOW())"
+  );
+
+  res.json({
+    pastMeals: rows,
+  });
+});
+//all-meals
+app.get("/all-meals", async (req, res) => {
+  const [rows] = await knex.raw("SELECT * FROM Meal ORDER BY id");
+
+  res.json({
+    allMeals: rows,
+  });
+});
+//first-meal
+app.get("/first-meal", async (req, res) => {
+  const [rows] = await knex.raw("SELECT * FROM Meal LIMIT 1");
+  if (rows.length < 1) {
+    res.sendStatus(404);
+    return;
+  }
+  res.json({
+    firstMeal: rows[0],
+  });
+});
+//last-meal
+app.get("/last-meal", async (req, res) => {
+  const [rows] = await knex.raw("SELECT * FROM Meal ORDER BY id DESC LIMIT 1");
+  if (rows.length < 1) {
+    res.sendStatus(404);
+    return;
+  }
+  res.json({
+    lastMeal: rows[0],
+  });
+});
 
 if (process.env.API_PATH) {
   app.use(process.env.API_PATH, router);
 } else {
-  throw "API_PATH is not set. Remember to set it in your .env file"
+  throw "API_PATH is not set. Remember to set it in your .env file";
 }
 
 // for the frontend. Will first be covered in the react class
