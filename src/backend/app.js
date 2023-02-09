@@ -24,7 +24,7 @@ router.use("/meals", mealsRouter);
 //future-meals
 app.get("/future-meals", async (req, res) => {
   const [rows] = await knex.raw(
-    "SELECT `id`, `title`, `when` FROM Meal WHERE `when` >(SELECT NOW())"
+    "SELECT `id`, `title`, `when` FROM Meal WHERE `when` >=(SELECT NOW())"
   );
 
   res.json({
@@ -34,7 +34,7 @@ app.get("/future-meals", async (req, res) => {
 //past-meals
 app.get("/past-meals", async (req, res) => {
   const [rows] = await knex.raw(
-    "SELECT `id`, `title`, `when` FROM Meal WHERE `when` < (SELECT NOW())"
+    "SELECT `id`, `title`, `when` FROM Meal WHERE `when` <= (SELECT NOW())"
   );
 
   res.json({
@@ -53,22 +53,20 @@ app.get("/all-meals", async (req, res) => {
 app.get("/first-meal", async (req, res) => {
   const [rows] = await knex.raw("SELECT * FROM Meal LIMIT 1");
   if (rows.length < 1) {
-    res.sendStatus(404);
-    return;
+    return res.status(204).send();
   }
   res.json({
-    firstMeal: rows[0],
+    firstMeal: rows,
   });
 });
 //last-meal
 app.get("/last-meal", async (req, res) => {
   const [rows] = await knex.raw("SELECT * FROM Meal ORDER BY id DESC LIMIT 1");
   if (rows.length < 1) {
-    res.sendStatus(404);
-    return;
+    return res.status(204).send();
   }
   res.json({
-    lastMeal: rows[0],
+    lastMeal: rows,
   });
 });
 
