@@ -22,7 +22,7 @@ reservationsRouter.post("/", async (request, response) => {
   try {
     await dbcon("Reservation").insert(reservation);
   } catch (error) {
-    return response.status(400).send(error);
+    return response.status(500).send(error);
   }
   response.send("ok");
 });
@@ -54,7 +54,6 @@ reservationsRouter.put("/:id", async (request, response) => {
         message: "Reservation with the given Id doesn't exist!",
       });
     } else {
-      try {
         const updateInfo = request.body;
         await dbcon("Reservation")
           .where({ id: request.params.id })
@@ -63,12 +62,9 @@ reservationsRouter.put("/:id", async (request, response) => {
           success: true,
           message: "Reservation with the given Id has been updated",
         });
-      } catch (err) {
-        return response.status(400).send(err);
-      }
     }
   } catch (error) {
-    return response.status(400).send(error);
+    return response.status(500).send(error);
   }
 });
 
@@ -83,17 +79,13 @@ reservationsRouter.delete("/:id", async (request, response) => {
         "Reservation with the given Id doesn't exist at all!"
       );
     } else {
-      try {
         await dbcon("Reservation").where({ id: request.params.id }).del();
         response.send(
           "Reservation with the given Id has been deleted successfully"
         );
-      } catch (err) {
-        return response.status(400).send(err);
-      }
     }
   } catch (error) {
-    return response.status(400).send(error);
+    return response.status(500).send(error);
   }
 });
 

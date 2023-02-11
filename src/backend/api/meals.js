@@ -22,7 +22,7 @@ mealsRouter.post("/", async (request, response) => {
   try {
     await dbcon("Meal").insert(meal);
   } catch (error) {
-    return response.status(400).send(error);
+    return response.status(500).send(error); 
   }
   response.send("ok");
 });
@@ -52,19 +52,15 @@ mealsRouter.put("/:id", async (request, response) => {
         message: "Meal with the given Id doesn't exist!",
       });
     } else {
-      try {
         const updateInfo = request.body;
         await dbcon("Meal").where({ id: request.params.id }).update(updateInfo);
         response.json({
           success: true,
           message: "Meal with the given Id has been updated",
         });
-      } catch (err) {
-        return response.status(400).send(err);
       }
-    }
   } catch (error) {
-    return response.status(400).send(error);
+    return response.status(500).send(error);
   }
 });
 
@@ -75,16 +71,12 @@ mealsRouter.delete("/:id", async (request, response) => {
     if (!meal) {
       return response.send("Meal with the given Id doesn't exist at all!",
       );
-    } else {
-      try {
+    } else {  
         await dbcon("Meal").where({ id: request.params.id }).del();
         response.send("Meal with the given Id has been deleted successfully");
-      } catch (err) {
-        return response.status(400).send(err);
-      }
     }
   } catch (error) {
-    return response.status(400).send(error);
+    return response.status(500).send(error);
   }
 });
 
