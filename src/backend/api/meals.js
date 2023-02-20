@@ -44,7 +44,7 @@ mealsRouter.get("/", async (request, response) => {
         .select("Meal.id", "Meal.title", "Meal.max_reservations")
         .sum("Reservation.number_of_guests as already_reserved")
         .groupBy("Reservation.meal_id")
-        .havingRaw("already_reserved >= Meal.max_reservations");
+        .having(dbcon.raw("already_reserved >= Meal.max_reservations"));
     } else {
       return response.status(400).json({
         error: "Only true or false (boolean), please!",

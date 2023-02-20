@@ -11,7 +11,7 @@ reviewsRouter.get("/", async (request, response) => {
     return response.status(500).send(error);
   }
   if (reviews.length < 1) {
-    return res.status(204).send();
+    return res.status(204).send({});
   }
   response.send(reviews);
 });
@@ -21,10 +21,10 @@ reviewsRouter.post("/", async (request, response) => {
   const review = request.body;
   try {
     await dbcon("Review").insert(review);
+    response.json({ success: true, message: "The review successfully added!" });
   } catch (error) {
     return response.status(500).send(error);
   }
-  response.json({ success: true, message: "The review successfully added!" });
 });
 
 // get a review by id
@@ -33,13 +33,13 @@ reviewsRouter.get("/:id", async (request, response) => {
   try {
     const { id } = request.params;
     [review] = await dbcon("Review").where({ id: id });
+    response.send(review);
   } catch (error) {
-    return response.status(500).send();
+    return response.status(500).send(error);
   }
   if (!review) {
     return response.status(204).send();
   }
-  response.send(review);
 });
 
 // update a review by id
