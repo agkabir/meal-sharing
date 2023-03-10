@@ -117,7 +117,7 @@ mealsRouter.get("/", async (request, response) => {
     }
   }
 
-  console.log("SQL", mealQuery.toSQL().sql);
+  //console.log("SQL", mealQuery.toSQL().sql);
   try {
     const data = await mealQuery;
     response.json({ data });
