@@ -7,7 +7,7 @@ import "./testComponentStyle.css";
 export default function TestComponent() {
   return (
     <section className="test-component">
-      <p>in a component</p>
+      <p>in a component ddd</p>
     </section>
   );
 }
