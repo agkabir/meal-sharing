@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import './styles.css';
+import MealCard from './MealCard'
 
 function MealList() {
   const [meals, setMeals] = useState([]);
@@ -9,19 +11,17 @@ function MealList() {
       setMeals(data.data);
     })();
   }, []);
-
   return (
-    <div>
+    <div className="meal-container">
       <h2>All Meals</h2>
-      {meals.map((meal) => (
-        <div key={meal.id}>
-          <h3>Title: {meal.title}</h3>
-          <ul>
-            <li>Description: {meal.description}</li>
-            <li>Price: {meal.price}</li>
-          </ul>
-        </div>
-      ))}
+      <div className="meal-list">
+        {meals.map((meal) => (
+          <div key={meal.id}>
+            <p></p>
+            <MealCard meal={meal} key={meal.id} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

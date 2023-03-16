@@ -7,7 +7,7 @@ function App() {
   return (
     <Router>
       <Route exact path="/">
-        <MealList/>
+        <MealList />
       </Route>
     </Router>
   );
