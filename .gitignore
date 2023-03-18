@@ -44,3 +44,5 @@ dist/
 .DS_Store
 
 package-lock.json
+
+DetailsContext.jsx
