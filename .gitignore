@@ -46,3 +46,4 @@ dist/
 package-lock.json
 
 DetailsContext.jsx
+MealDetails_old.jsx

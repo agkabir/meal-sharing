@@ -25,16 +25,24 @@ mealsRouter.get("/", async (request, response) => {
       });
     }
   }
+  
   // Condition check for availableReservations
   if (availableReservations) {
     if (availableReservations.toString().toLowerCase() === "true") {
       mealQuery = mealQuery
-        .join("Reservation", {
+        .leftJoin("Reservation", {
           "Meal.id": "Reservation.meal_id",
         })
-        .select("Meal.id", "Meal.title", "Meal.max_reservations")
-        .sum({ already_reserved: "Reservation.number_of_guests" })
-        .groupBy("Reservation.meal_id")
+        .select(
+          "Meal.id",
+          "Meal.title",
+          "Meal.max_reservations",
+          dbcon.raw(
+            "SUM(IFNULL(Reservation.number_of_guests, 0)) as  already_reserved"
+          )
+        )
+        //.sum({ already_reserved: IFNULL("Reservation.number_of_guests", 0) })
+        .groupBy("Meal.id")
         .havingRaw("Meal.max_reservations > already_reserved");
       // i can not figure out why having is not working
       //.having("Meal.max_reservations", ">", "already_reserved");
@@ -204,5 +212,39 @@ mealsRouter.get("/:meal_id/reviews", async (request, response) => {
   }
   response.send(review);
 });
+
+// Returns sum of all reservations for a specific meal
+mealsRouter.get("/:meal_id/reservations", async (request, response) => {
+  let reservation = undefined;
+  try {
+    const { meal_id } = request.params;
+    reservation = await dbcon("Meal")
+      .leftJoin("Reservation", {
+        "Meal.id": "Reservation.meal_id",
+      })
+      .select(
+        "Meal.id",
+        "Meal.title",
+        "Meal.description",
+        "Meal.location",
+        "Meal.when",
+        "Meal.price",
+        "Meal.max_reservations",
+        dbcon.raw(
+          "SUM(IFNULL(Reservation.number_of_guests, 0)) as  already_reserved"
+        )
+      )
+      .where("Meal.id", "=", meal_id)
+      .groupBy("Meal.id");
+  } catch (error) {
+    return response.status(500).send();
+  }
+  if (reservation.length < 1) {
+    return response.status(204).send();
+  }
+  response.send(reservation);
+});
+
+
 
 module.exports = mealsRouter;

@@ -16,7 +16,71 @@ p {
   margin-bottom: 0.5rem;
 }
 
-.meal-container {
+.pTagTitle {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+}
+
+/* nav bar */
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  height: 4rem;
+}
+
+.nav-links {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  transition: 0.3s ease-in-out all;
+  margin: 0 1rem;
+}
+.nav-link {
+  display: block;
+  text-align: center;
+  color: #fff;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  padding: 1rem 0;
+  transition: 0.3s ease-in-out all;
+}
+.nav-link:hover {
+  color: #645cff;
+}
+/* end of nav bar */
+
+/*
+=============== 
+Footer
+===============
+*/
+.page-footer {
+  height: 4rem;
+  background: black;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.page-footer p {
+  margin-bottom: 0;
+}
+.footer-logo,
+.page-footer a {
+  color: #645cff;
+}
+
+/*
+=============== 
+Footer end
+===============
+*/
+
+.container {
   display: flex;
   flex-direction: column;
 }
@@ -29,4 +93,51 @@ p {
 
 .meal-list h5 {
   font-size: 1.15rem;
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="submit"] {
+  width: 100%;
+  background-color: #4caf50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.info-msg {
+  padding: 0.5rem;
+  color: #059;
+  background-color: #bef;
+}
+
+.warning-msg {
+  padding: 0.5rem;
+  color: #9f6000;
+  background-color: #feefb3;
 }
