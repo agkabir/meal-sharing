@@ -1,5 +1,4 @@
 import React from "react";
-import "./styles.css";
 import MealCard from "./MealCard";
 import { useMealsContext } from "./FetchMeals";
 

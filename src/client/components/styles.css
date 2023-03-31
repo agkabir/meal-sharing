@@ -20,7 +20,9 @@ p {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
 }
-
+.Link:hover{
+color: #645cff;
+}
 /* nav bar */
 .navbar {
   display: flex;
