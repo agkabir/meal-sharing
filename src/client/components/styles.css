@@ -20,8 +20,8 @@ p {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
 }
-.Link:hover{
-color: #645cff;
+.Link:hover {
+  color: #645cff;
 }
 /* nav bar */
 .navbar {
@@ -108,7 +108,6 @@ input[type="email"],
 input[type="number"],
 select,
 textarea {
-  width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
@@ -117,7 +116,15 @@ textarea {
   box-sizing: border-box;
 }
 
-input[type="submit"] {
+form input[type="text"],
+form input[type="email"],
+input[type="number"],
+form select,
+form textarea {
+  width: 100%;
+}
+
+form input[type="submit"] {
   width: 100%;
   background-color: #4caf50;
   color: white;
@@ -142,4 +149,22 @@ input[type="submit"]:hover {
   padding: 0.5rem;
   color: #9f6000;
   background-color: #feefb3;
+}
+
+.search-bar{
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  width: 100%;
+}
+
+.search-bar input[type="text"],
+.search-bar select{
+  margin: 8px 8px;
+}
+
+.btn-unclickable:disabled {
+  background: #999;
+  color: #555;
 }
