@@ -1,17 +1,19 @@
 export const initialState = {
-    loading: false,
-    searchedMeals: [],
-    error: false,
-    title: "",
-    sortBy:"when",
-    sortDir: false
+  loading: false,
+  searchedMeals: [],
+  error: '',
+  title: "",
+  sortBy: "when",
+  sortDir: false,
 };
 
-export const handleFetch = async(state, dispatchFunc) => {
-  let URI = 'api/meals?'
-  if (state.title) { URI = URI + "title=" + state.title+'&'; }
+export const handleFetch = async (state, dispatchFunc) => {
+  let URI = "api/meals?";
+  if (state.title) {
+    URI = URI + "title=" + state.title + "&";
+  }
   if (state.sortBy) {
-    URI = URI + "sortKey=" + state.sortBy + "&"; 
+    URI = URI + "sortKey=" + state.sortBy + "&";
   }
   if (state.sortDir) {
     URI = URI + "sortDir=desc&";
@@ -21,12 +23,11 @@ export const handleFetch = async(state, dispatchFunc) => {
     const response = await fetch(URI);
     if (!response.ok) throw Error("Did not receive expected data!");
     const result = await response.json();
-    dispatchFunc({ type: 'success', payload: result.data });
+    dispatchFunc({ type: "success", payload: result.data });
   } catch (err) {
-    dispatchFunc({ type: 'error' });
-  } 
+    dispatchFunc({ type: "error", payload: err.message });
+  }
 };
-
 
 export const MealListReducer = (state, action) => {
   switch (action.type) {
@@ -34,7 +35,7 @@ export const MealListReducer = (state, action) => {
       return {
         ...state,
         loading: true,
-        error: false,
+        error: '',
         searchedMeals: [],
       };
     case "success":
@@ -46,7 +47,7 @@ export const MealListReducer = (state, action) => {
     case "error":
       return {
         loading: false,
-        error: true,
+        error: action.payload,
         searchedMeals: [],
       };
     case "changeInput":

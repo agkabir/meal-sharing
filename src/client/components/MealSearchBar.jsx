@@ -31,7 +31,11 @@ export function MealSearchBar({ state, handleChange, handleSortDirection }) {
         className="btn-unclickable"
         disabled={!state.title}
       >
-        {!state.sortDir ? <FontAwesomeIcon icon={faArrowUp} /> : <FontAwesomeIcon icon={faArrowDown}/>}
+        {!state.sortDir ? (
+          <FontAwesomeIcon icon={faArrowUp} />
+        ) : (
+          <FontAwesomeIcon icon={faArrowDown} />
+        )}
       </button>
     </div>
   );
