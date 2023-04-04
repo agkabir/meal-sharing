@@ -4,12 +4,10 @@ import MealCard from "./MealCard";
 
 function MealList() {
   const [meals, setMeals] = useState([]);
-  useEffect(() => {
-    (async () => {
+  useEffect(async () => {
       const res = await fetch("api/meals");
       const data = await res.json();
       setMeals(data.data);
-    })();
   }, []);
   return (
     <div className="meal-container">
