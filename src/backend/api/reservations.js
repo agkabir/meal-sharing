@@ -4,14 +4,29 @@ const dbcon = require("../database");
 
 // get all reservations
 reservationsRouter.get("/", async (request, response) => {
+  let reservationQuery = dbcon("Reservation");
   let reservations = undefined;
+  // all the query strings
+  const { mealId } = request.query;
+
+  // Condition check for maxPrice
+  if (mealId) {
+    if (mealId.match(/^\d+$/)) {
+      reservationQuery = reservationQuery.where("meal_id", "=", mealId);
+    } else {
+      return response.status(400).json({
+        error: "No character only numeric value for mealId, please!",
+      });
+    }
+  }
+
   try {
-    reservations = await dbcon("Reservation");
+    reservations = await reservationQuery;
   } catch (error) {
     return response.status(400).send(error);
   }
   if (reservations.length < 1) {
-    return res.status(204).send();
+    return response.send([]);
   }
   response.send(reservations);
 });
@@ -21,10 +36,13 @@ reservationsRouter.post("/", async (request, response) => {
   const reservation = request.body;
   try {
     await dbcon("Reservation").insert(reservation);
+    response.json({
+      success: true,
+      message: "Reservation successfully done!!",
+    });
   } catch (error) {
     return response.status(500).send(error);
   }
-  response.send("ok");
 });
 
 // get a reservation by id
@@ -54,14 +72,14 @@ reservationsRouter.put("/:id", async (request, response) => {
         message: "Reservation with the given Id doesn't exist!",
       });
     } else {
-        const updateInfo = request.body;
-        await dbcon("Reservation")
-          .where({ id: request.params.id })
-          .update(updateInfo);
-        response.json({
-          success: true,
-          message: "Reservation with the given Id has been updated",
-        });
+      const updateInfo = request.body;
+      await dbcon("Reservation")
+        .where({ id: request.params.id })
+        .update(updateInfo);
+      response.json({
+        success: true,
+        message: "Reservation with the given Id has been updated",
+      });
     }
   } catch (error) {
     return response.status(500).send(error);
@@ -79,10 +97,10 @@ reservationsRouter.delete("/:id", async (request, response) => {
         "Reservation with the given Id doesn't exist at all!"
       );
     } else {
-        await dbcon("Reservation").where({ id: request.params.id }).del();
-        response.send(
-          "Reservation with the given Id has been deleted successfully"
-        );
+      await dbcon("Reservation").where({ id: request.params.id }).del();
+      response.send(
+        "Reservation with the given Id has been deleted successfully"
+      );
     }
   } catch (error) {
     return response.status(500).send(error);
