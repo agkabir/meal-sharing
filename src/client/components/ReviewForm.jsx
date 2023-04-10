@@ -19,28 +19,33 @@ export function ReviewForm({mealId}) {
   
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newReview = {
-      title: reviewState.reviewTitle,
-      meal_id: mealId,
-      description: reviewState.rewiewDescription,
-      stars: Number(reviewState.starRating),
-      created_date: new Date().toJSON().slice(0, 10),
-    };
-    fetch("api/reviews", {
-      method: "POST",
-      body: JSON.stringify(newReview),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        alert(response.message);
-        history.push("/reviews");
+    if (Number(reviewState.starRating>0)) {
+      const newReview = {
+        title: reviewState.reviewTitle,
+        meal_id: mealId,
+        description: reviewState.rewiewDescription,
+        stars: Number(reviewState.starRating),
+        created_date: new Date().toJSON().slice(0, 10),
+      };
+      fetch("api/reviews", {
+        method: "POST",
+        body: JSON.stringify(newReview),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
       })
-      .catch((err) => {
-        alert(err.message);
-      });
+        .then((response) => response.json())
+        .then((response) => {
+          alert(response.message);
+          history.push("/reviews");
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    }
+    else {
+      alert('Please select a score!');
+    }
   };
     return (
       <>

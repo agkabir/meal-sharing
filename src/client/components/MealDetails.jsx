@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useReducer } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { ReservationForm } from "./ReservationForm";
-import { ReviewForm } from "./ReviewForm";
 import { MealDetailsReducer, initialState } from "./MealDetailsReducer";
 
 const dtFormat = new Intl.DateTimeFormat("default", {
@@ -34,14 +33,14 @@ function MealDetails() {
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        dispatch({type:'fetchData'})
+        dispatch({ type: "fetchData" });
         const response = await fetch(`api/meals/${id}/reservations`);
         if (!response.ok) throw Error("Did not receive expected data!");
         const result = await response.json();
         const [data] = result;
-        dispatch({ type: 'success', payload: data });
+        dispatch({ type: "success", payload: data });
       } catch (err) {
-        dispatch({ type: 'error', payload: err.message });
+        dispatch({ type: "error", payload: err.message });
       }
     };
     fetchReservations();

@@ -1,7 +1,6 @@
 export const initialReviewFormState = {
   reviewTitle: "",
   rewiewDescription: "",
-  rating:'5',
   starHover: 0,
   starRating: 0,
 };
