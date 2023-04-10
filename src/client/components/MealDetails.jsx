@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { ReservationForm } from "./ReservationForm";
+import { ReviewForm } from "./ReviewForm";
+import { MealDetailsReducer, initialState } from "./MealDetailsReducer";
 
 const dtFormat = new Intl.DateTimeFormat("default", {
   day: "2-digit",
@@ -14,59 +16,76 @@ const dtFormat = new Intl.DateTimeFormat("default", {
 function MealDetails() {
   const history = useHistory();
   const { id } = useParams();
-  const [reservedMeal, setReservedMeal] = useState();
-  const [isResLoading, setIsResLoading] = useState(true);
-  const [fetchResError, setFetchResError] = useState(null);
-  //console.log(reservedMeal);
+  const [state, dispatch] = useReducer(MealDetailsReducer, initialState);
+  const handleReservationUpdate = (resGuest) => {
+    const newReservedMeal = {
+      ...state.reservedMeal,
+      already_reserved: state.reservedMeal.already_reserved
+        ? Number(state.reservedMeal.already_reserved) + Number(resGuest)
+        : Number(resGuest),
+    };
+    dispatch({
+      type: "updateState",
+      payload: { name: "reservedMeal", value: newReservedMeal },
+    });
+  };
 
   // fetch reservations
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        //setIsLoading(true);
+        dispatch({type:'fetchData'})
         const response = await fetch(`api/meals/${id}/reservations`);
         if (!response.ok) throw Error("Did not receive expected data!");
         const result = await response.json();
-        const [data] = result ;
-        setReservedMeal(data);
-        setFetchResError(null);
+        const [data] = result;
+        dispatch({ type: 'success', payload: data });
       } catch (err) {
-        setFetchResError(err.message);
-      } finally {
-        setIsResLoading(false);
+        dispatch({ type: 'error', payload: err.message });
       }
     };
     fetchReservations();
   }, []);
 
-  if (isResLoading) {
+  if (state.isResLoading) {
     return <h1>loading...</h1>;
   }
-  
   const availableSeats =
-    Number(reservedMeal.max_reservations) - Number(reservedMeal.already_reserved);
+    Number(state.reservedMeal.max_reservations) -
+    Number(state.reservedMeal.already_reserved);
 
   return (
-    <div>
-      <h3>{reservedMeal.title}</h3>
-      <p>{reservedMeal.description}</p>
-      <p>Max reservation : {reservedMeal.max_reservations}</p>
-      <p>Available seats : {availableSeats}</p>
-      <p>location : {reservedMeal.location}</p>
-      <p>Price : {reservedMeal.price} DKK</p>
-      <p>Date & Time : {dtFormat.format(new Date(reservedMeal.when))}</p>
-      {availableSeats > 0 ? (
-        <ReservationForm
-          id={id}
-          setReservedMeal={setReservedMeal}
-          availableSeats={availableSeats}
+    <section className="meal-details-container">
+      <div className="meal-details">
+        <img
+          src={require(`../assets/images/${id}.png`).default}
+          alt={state.reservedMeal.title}
+          className="meal-card-img img"
         />
-      ) : (
-        <p className="warning-msg">
-          Sorry no seats are available for reservations !!
+        <h3>{state.reservedMeal.title}</h3>
+        <p>{state.reservedMeal.description}</p>
+        <p>Max reservation : {state.reservedMeal.max_reservations}</p>
+        <p>Available seats : {availableSeats}</p>
+        <p>location : {state.reservedMeal.location}</p>
+        <p>Price : {state.reservedMeal.price} DKK</p>
+        <p>
+          Date & Time : {dtFormat.format(new Date(state.reservedMeal.when))}
         </p>
-      )}
-    </div>
+      </div>
+      <div className="make-reservation">
+        {availableSeats > 0 ? (
+          <ReservationForm
+            id={id}
+            handleReservationUpdate={handleReservationUpdate}
+            availableSeats={availableSeats}
+          />
+        ) : (
+          <p className="warning-msg">
+            Sorry no seats are available for reservations !!
+          </p>
+        )}
+      </div>
+    </section>
   );
 }
 

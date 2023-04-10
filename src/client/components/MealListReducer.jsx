@@ -1,7 +1,7 @@
 export const initialState = {
   loading: false,
   searchedMeals: [],
-  error: '',
+  error: "",
   title: "",
   sortBy: "when",
   sortDir: false,
@@ -35,7 +35,7 @@ export const MealListReducer = (state, action) => {
       return {
         ...state,
         loading: true,
-        error: '',
+        error: "",
         searchedMeals: [],
       };
     case "success":
