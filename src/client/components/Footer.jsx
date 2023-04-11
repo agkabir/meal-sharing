@@ -6,7 +6,7 @@ function Footer() {
       <p>
         &copy;<span id="date">2023</span>
         <span className="footer-logo"> MealSharing </span>
-        Built by <Link to="#">ReactAdict</Link>
+        Built by <Link to="#">Kabir, ReactAdict</Link>
       </p>
     </footer>
   );
