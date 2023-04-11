@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ReviewForm } from "./ReviewForm";
+
 const dtFormat = new Intl.DateTimeFormat("default", {
   day: "2-digit",
   month: "short",
@@ -13,7 +14,7 @@ const dtFormat = new Intl.DateTimeFormat("default", {
 function MealCard({ meal }) {
   const [showDetails, setShowDetails] = useState(false);
   const [writeReview, setWriteReview] = useState(false);
-  
+
   const handleShowDetails = () => {
     setShowDetails(!showDetails);
   };
@@ -21,10 +22,15 @@ function MealCard({ meal }) {
     setWriteReview(!writeReview);
   };
 
-  
-
   return (
-    <div>
+    <div className="meal-card">
+      <Link to={`/meals/${meal.id}`} className="Link">
+        <img
+          src={require(`../assets/images/${meal.id}.png`).default}
+          alt={meal.title}
+          className="meal-card-img img"
+        />
+      </Link>
       <Link to={`/meals/${meal.id}`} className="Link">
         <h3>{meal.title}</h3>
       </Link>
@@ -35,15 +41,13 @@ function MealCard({ meal }) {
           <p>location : {meal.location}</p>
           <p>Price : {meal.price} DKK</p>
           <p>Date & Time : {dtFormat.format(new Date(meal.when))}</p>
-          <p className="info-msg">Want to write a review for this meal </p>
-          {writeReview && <ReviewForm mealId={meal.id} />}
-          <button onClick={handleWriteReview}>
-            {!writeReview ? "Write Review" : "Cancel"}
+          <button onClick={handleWriteReview} className="display-block">
+            {!writeReview ? "Write Review" : "Cancel Review"}
           </button>
-          <p></p>
+          {writeReview && <ReviewForm mealId={meal.id} />}
         </>
       )}
-      <button onClick={handleShowDetails}>
+      <button onClick={handleShowDetails} className="display-block">
         {!showDetails ? "Show Details" : "Hide Details"}
       </button>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMealsContext } from "./FetchMeals";
 import { Link } from "react-router-dom";
+import { DisplayStarRating } from "./StarRating";
 
 function Reviews() {
   const [reviews, setReviews] = useState();
@@ -42,17 +43,16 @@ function Reviews() {
               <div key={review.ID}>
                 <p className="pTagTitle">
                   Meal:
-                  <Link
-                    to={`/meals/${review.meal_id}`}
-                    className="Link"
-                  >
+                  <Link to={`/meals/${review.meal_id}`} className="Link">
                     {mealValue.title}
                   </Link>
                 </p>
                 <p>Description : {mealValue.description}</p>
                 <p className="pTagTitle">Review Title: {review.title}</p>
                 <p>Review Description : {review.description}</p>
-                <p>Rating : {review.stars}</p>
+                <p>
+                  Rating : <DisplayStarRating ratingScore={review.stars} />
+                </p>
               </div>
             );
           })}

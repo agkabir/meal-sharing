@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export function ReservationForm({ id, setReservedMeal, availableSeats }) {
+export function ReservationForm({ id, handleReservationUpdate, availableSeats }) {
   const [formState, setFormState] = useState({
     resName: "",
     resEmail: "",
@@ -32,11 +32,7 @@ export function ReservationForm({ id, setReservedMeal, availableSeats }) {
       .then((response) => response.json())
       .then((response) => {
         alert(response.message);
-        setReservedMeal((data) => ({...data,
-          already_reserved: data.already_reserved
-            ? Number(data.already_reserved) + Number(formState.resGuest)
-            : Number(formState.resGuest),
-        }));
+        handleReservationUpdate(formState.resGuest);
         if (availableSeats - Number(formState.resGuest) > 0) {
           setFormState({
             resName: "",
@@ -56,7 +52,7 @@ export function ReservationForm({ id, setReservedMeal, availableSeats }) {
       <p className="warning-msg">
         Attention you can book at most {availableSeats} seats !
       </p>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form">
         <label htmlFor="resName">Name :</label>
         <input
           type="text"

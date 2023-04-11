@@ -10,11 +10,11 @@ function Home() {
     return <h1>loading...</h1>;
   }
   return (
-    <div className="meal-container">
+    <div>
       <h1>Meal Sharing</h1>
       <h2>This page displays a portion of all meals</h2>
       <div className="meal-list">
-        {meals.slice(0, 2).map((meal) => (
+        {meals.slice(0, 3).map((meal) => (
           <div key={meal.id}>
             <MealCard meal={meal} key={meal.id} />
           </div>

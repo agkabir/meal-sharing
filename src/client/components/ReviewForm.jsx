@@ -1,81 +1,92 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 import { useHistory } from "react-router-dom";
+import { initialReviewFormState,ReviewFormReducer } from "./ReviewFormReducer";
+import { StarRating} from "./StarRating";
 
 export function ReviewForm({mealId}) {
     // posting a review
-    const history = useHistory();
-  const [reviewTitle, setReviewTitle] = useState("");
-  const [rewiewDescription, setRewiewDescription] = useState("");
-  const [rating, setRating] = useState('5');
+  const history = useHistory();
+  const [reviewState, reviewDispatch] = useReducer(
+    ReviewFormReducer,
+    initialReviewFormState
+  );
+  const handleStarRating = (actionType,payload) => {
+  reviewDispatch({
+    type: actionType,
+    payload: payload,
+  });  
+  }
   
-  const changeOnReviewTitle = (e) => {
-    setReviewTitle(e.target.value);
-  };
-  const changeOnRewiewDescription = (e) => {
-    setRewiewDescription(e.target.value);
-  };
-  const changeOnRating = (e) => {
-    setRating(e.target.value);
-  };
-  
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newReview = {
-      title: reviewTitle,
-      meal_id: mealId,
-      description: rewiewDescription,
-      stars: Number(rating),
-      created_date: new Date().toJSON().slice(0, 10),
-    };
-    fetch("api/reviews", {
-      method: "POST",
-      body: JSON.stringify(newReview),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        alert(response.message);
-        history.push("/reviews");
+    if (Number(reviewState.starRating>0)) {
+      const newReview = {
+        title: reviewState.reviewTitle,
+        meal_id: mealId,
+        description: reviewState.rewiewDescription,
+        stars: Number(reviewState.starRating),
+        created_date: new Date().toJSON().slice(0, 10),
+      };
+      fetch("api/reviews", {
+        method: "POST",
+        body: JSON.stringify(newReview),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
       })
-      .catch((err) => {
-        alert(err.message);
-      });
+        .then((response) => response.json())
+        .then((response) => {
+          alert(response.message);
+          history.push("/reviews");
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    }
+    else {
+      alert('Please select a score!');
+    }
   };
     return (
-        <>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="title">Review Title :</label>
-        <input
-          type="text"
-          value={reviewTitle}
-          onChange={changeOnReviewTitle}
-          minLength="4"
-          id="title"
-          placeholder="Review title..."
-          required
-        />
-        <label htmlFor="description">Review Description : </label>
-        <textarea
-          value={rewiewDescription}
-          onChange={changeOnRewiewDescription}
-          id="description"
-          placeholder="description..."
-          required
-        />
-        <label htmlFor="rating">Choose a Rating :</label>
-        <select id="rating" onChange={changeOnRating}>
-          <option value="5">5</option>
-          <option value="4">4</option>
-          <option value="3">3</option>
-          <option value="2">2</option>
-          <option value="1">1</option>
-        </select>
-
-        <input type="submit" value="Post Review" />
-            </form>
-        </>
+      <>
+        <form onSubmit={handleSubmit} className="form">
+          <label htmlFor="title">Review Title :</label>
+          <input
+            type="text"
+            name="reviewTitle"
+            value={reviewState.reviewTitle}
+            onChange={(e) =>
+              reviewDispatch({
+                type: "changeInput",
+                payload: { name: e.target.name, value: e.target.value },
+              })
+            }
+            minLength="4"
+            id="title"
+            placeholder="Review title..."
+            required
+          />
+          <label htmlFor="description">Review Description : </label>
+          <textarea
+            value={reviewState.rewiewDescription}
+            name="rewiewDescription"
+            onChange={(e) =>
+              reviewDispatch({
+                type: "changeInput",
+                payload: { name: e.target.name, value: e.target.value },
+              })
+            }
+            id="description"
+            placeholder="description..."
+            required
+          />
+          <label htmlFor="rating">Choose a Rating :</label>
+          <StarRating
+            reviewFormState={reviewState}
+            handleStarRating={handleStarRating}
+          />
+          <input type="submit" value="Post Review" />
+        </form>
+      </>
     );
 }
