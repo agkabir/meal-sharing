@@ -11,7 +11,7 @@ reviewsRouter.get("/", async (request, response) => {
     return response.status(500).send(error);
   }
   if (reviews.length < 1) {
-    return res.status(204).send({});
+    return response.send({});
   }
   response.send(reviews);
 });
