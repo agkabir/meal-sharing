@@ -38,7 +38,7 @@ function MealCard({ meal }) {
       {showDetails && (
         <>
           <p>Max reservation : {meal.max_reservations}</p>
-          <p>location : {meal.location}</p>
+          <p>Location : {meal.location}</p>
           <p>Price : {meal.price} DKK</p>
           <p>Date & Time : {dtFormat.format(new Date(meal.when))}</p>
           <button onClick={handleWriteReview} className="display-block">

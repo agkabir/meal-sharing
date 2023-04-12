@@ -5,16 +5,19 @@ import MealCard from "./MealCard";
 import { useMealsContext } from "./FetchMeals";
 
 function Home() {
-  const { meals, isLoading, fetchError } = useMealsContext();
-  if (isLoading) {
+  const { state } = useMealsContext();
+  if (state.loading) {
     return <h1>loading...</h1>;
+  }
+  if (state.error) {
+    return <h1>{state.error}</h1>;
   }
   return (
     <div>
       <h1>Meal Sharing</h1>
       <h2>This page displays a portion of all meals</h2>
       <div className="meal-list">
-        {meals.slice(0, 3).map((meal) => (
+        {state.meals.slice(0, 3).map((meal) => (
           <div key={meal.id}>
             <MealCard meal={meal} key={meal.id} />
           </div>

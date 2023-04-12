@@ -50,6 +50,7 @@ p {
   display: flex;
   justify-content: right;
   align-items: center;
+  padding-right: 1rem;
 }
 .navbar .rightSide .nav-links a {
   color: #fff;
@@ -187,6 +188,17 @@ button:hover {
   color: #c2bcbc;
 }
 
+
+.search-bar button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+
+
 .info-msg {
   padding: 0.5rem;
   color: #059;
@@ -212,10 +224,6 @@ button:hover {
   margin: 8px 8px;
 }
 
-.btn-unclickable:disabled {
-  background: #999;
-  color: #555;
-}
 
 /* meal card */
 .meal-card {

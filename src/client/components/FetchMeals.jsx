@@ -1,35 +1,25 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useReducer, useEffect } from "react";
 export const MealsContext = createContext();
+import {
+  FetchMealsReducer, initialState,
+  handleFetch,
+} from "./FetchMealsReducer";
+import DebounceText from "./DebounceText";
 
 export function MealsContextProvider({ children }) {
-  const [meals, setMeals] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  const [fetchError, setFetchError] = useState(null);
+  const [state, dispatch] = useReducer(FetchMealsReducer, initialState);
+  const debouncedSearch = DebounceText(state.title,1000)
 
   // fetch meals
   useEffect(() => {
-    const fetchMeals = async () => {
-      try {
-        //setIsLoading(true);
-        const response = await fetch("api/meals");
-        if (!response.ok) throw Error("Did not receive expected data!");
-        const result = await response.json();
-        setMeals(result.data);
-        setFetchError(null);
-      } catch (err) {
-        setFetchError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchMeals();
-  }, []);
+      handleFetch(state, dispatch);
+  }, [debouncedSearch, state.sortBy, state.sortDir]);
 
   const getMeal = (mealId) => {
-    if (!meals) return undefined;
-    return meals.find((aMeal)=> aMeal.id === Number(mealId))
+    if (!state.meals) return undefined;
+    return state.meals.find((aMeal)=> aMeal.id === Number(mealId))
   }
-  const contextValue = { meals, getMeal, isLoading, fetchError };
+  const contextValue = { state, dispatch, getMeal };
 
   return (
     <div>
