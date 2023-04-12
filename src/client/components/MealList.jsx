@@ -1,14 +1,12 @@
 import React, { useReducer, useEffect } from "react";
 import MealCard from "./MealCard";
 import { useMealsContext } from "./FetchMeals";
-import { MealListReducer, initialState, handleFetch } from "./MealListReducer";
+
 import { MealSearchBar } from "./MealSearchBar";
-import DebounceText from "./DebounceText";
 
 function MealList() {
-  const { meals, isLoading, fetchError } = useMealsContext();
-  const [state, dispatch] = useReducer(MealListReducer, initialState);
-  const debouncedSearch = DebounceText(state.title, 1000);
+  const { state, dispatch } = useMealsContext();
+  
   const handleChange = (e) => {
     dispatch({
       type: "changeInput",
@@ -21,13 +19,7 @@ function MealList() {
       payload: !state.sortDir,
     });
   };
-  useEffect(() => {
-    if (debouncedSearch) {
-      handleFetch(state, dispatch);
-    } else {
-      dispatch({ type: "reset" });
-    }
-  }, [debouncedSearch, state.sortBy, state.sortDir]);
+  
 
   return (
     <div className="container">
@@ -36,10 +28,10 @@ function MealList() {
         handleChange={handleChange}
         handleSortDirection={handleSortDirection}
       />
-      {(isLoading || state.loading) && <h1>loading...</h1>}
-      {debouncedSearch && !state.loading && !isLoading && (
+      {state.loading && <h1>loading...</h1>}
+      {state.error && <h1>{state.error}</h1>}
+      {state.title && state.searchedMeals && !state.loading && (
         <div>
-          <h2>Searched Meals</h2>
           <div className="meal-list">
             {state.searchedMeals.map((meal) => (
               <div key={meal.id}>
@@ -49,11 +41,10 @@ function MealList() {
           </div>
         </div>
       )}
-      {!state.title && !state.loading && !isLoading && (
+      {!state.title && state.meals && !state.loading && (
         <div>
-          <h2>All Meals</h2>
           <div className="meal-list">
-            {meals.map((meal) => (
+            {state.meals.map((meal) => (
               <div key={meal.id}>
                 <MealCard meal={meal} key={meal.id} />
               </div>

@@ -18,7 +18,6 @@ export function MealSearchBar({ state, handleChange, handleSortDirection }) {
         onChange={handleChange}
         name="sortBy"
         id="sortBy"
-        disabled={!state.title}
         value={state.sortBy}
       >
         <option value="when">When</option>
@@ -28,8 +27,7 @@ export function MealSearchBar({ state, handleChange, handleSortDirection }) {
       <button
         onClick={handleSortDirection}
         type="button"
-        className="btn-unclickable"
-        disabled={!state.title}
+        className="btn-sort-dir"
       >
         {!state.sortDir ? (
           <FontAwesomeIcon icon={faArrowUp} />

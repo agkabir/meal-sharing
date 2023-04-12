@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import { DisplayStarRating } from "./StarRating";
 
 function Reviews() {
-  const [reviews, setReviews] = useState();
+  const [reviews, setReviews] = useState([]);
   const [isReviewLoading, setIsReviewLoading] = useState(true);
   const [fetchReviewError, setFetchReviewError] = useState(null);
-  const { getMeal, isLoading, fetchError } = useMealsContext();
+  const { state, getMeal } = useMealsContext();
 
   // fetch reviews
   useEffect(() => {
@@ -28,10 +28,10 @@ function Reviews() {
     fetchReviews();
   }, []);
 
-  if (isLoading | isReviewLoading) {
+  if (state.loading || isReviewLoading) {
     return <h1>loading...</h1>;
   }
-  console.log("getMeal", getMeal);
+  
   return (
     <div className="container">
       <h2>All Reviews</h2>
