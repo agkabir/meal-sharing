@@ -22,7 +22,7 @@ function MealList() {
     });
   };
   useEffect(() => {
-    if (state.title) {
+    if (debouncedSearch) {
       handleFetch(state, dispatch);
     } else {
       dispatch({ type: "reset" });
