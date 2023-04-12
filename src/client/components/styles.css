@@ -104,6 +104,12 @@ Footer
 Footer end
 ===============
 */
+.show-more-div{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 
 .container {
   display: flex;
