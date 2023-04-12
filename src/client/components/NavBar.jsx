@@ -14,21 +14,29 @@ function NavBar() {
         </div>
 
         <div className="rightSide">
-          <div className="nav-links" id={showNavLinks?"hidden":""}>
-            <Link to="/">
+          <div className="nav-links" id={showNavLinks ? "hidden" : ""}>
+            <Link to="/" onClick={() => setShowNavLinks(!showNavLinks)}>
               Home
             </Link>
 
-            <Link to="/meals">
+            <Link to="/meals" onClick={() => setShowNavLinks(!showNavLinks)}>
               Meals
             </Link>
 
-            <Link to="/reviews">
+            <Link to="/reviews" onClick={() => setShowNavLinks(!showNavLinks)}>
               Reviews
             </Link>
           </div>
-          <button type="button" className="nav-btn" onClick={()=>setShowNavLinks(!showNavLinks)}>
-            {!showNavLinks ? <FontAwesomeIcon icon={faAlignJustify} /> : <FontAwesomeIcon icon={faXmark} />}
+          <button
+            type="button"
+            className="nav-btn"
+            onClick={() => setShowNavLinks(!showNavLinks)}
+          >
+            {!showNavLinks ? (
+              <FontAwesomeIcon icon={faAlignJustify} />
+            ) : (
+              <FontAwesomeIcon icon={faXmark} />
+            )}
           </button>
         </div>
       </nav>
