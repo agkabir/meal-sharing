@@ -34,7 +34,7 @@ p {
   height: 5rem;
   display: flex;
   position: relative;
-  background-color:black;
+  background-color: black;
 }
 .navbar .leftSide {
   flex: 50%;
@@ -104,7 +104,12 @@ Footer
 Footer end
 ===============
 */
-
+.show-more-div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 .container {
   display: flex;
   flex-direction: column;
@@ -188,7 +193,6 @@ button:hover {
   color: #c2bcbc;
 }
 
-
 .search-bar button {
   background-color: transparent;
   border: none;
@@ -196,8 +200,6 @@ button:hover {
   cursor: pointer;
   font-size: 2rem;
 }
-
-
 
 .info-msg {
   padding: 0.5rem;
@@ -223,7 +225,6 @@ button:hover {
 .search-bar select {
   margin: 8px 8px;
 }
-
 
 /* meal card */
 .meal-card {
@@ -262,8 +263,8 @@ button:hover {
   .meal-list {
     grid-template-columns: 1fr 1fr;
   }
-  .meal-details-container{
-grid-template-columns: 1fr 1fr;
+  .meal-details-container {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -292,8 +293,8 @@ grid-template-columns: 1fr 1fr;
   .meal-list {
     grid-template-columns: 1fr;
   }
-  .meal-details-container{
-grid-template-columns: 1fr;
+  .meal-details-container {
+    grid-template-columns: 1fr;
   }
 }
 @media screen and (min-width: 1250px) {
