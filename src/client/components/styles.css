@@ -63,6 +63,9 @@ p {
 .navbar .rightSide .nav-links a:hover {
   color: #645cff;
 }
+.navbar .rightSide .nav-links .active-link {
+  color: #9f6000;
+}
 .navbar .rightSide #hidden {
   display: flex;
 }
