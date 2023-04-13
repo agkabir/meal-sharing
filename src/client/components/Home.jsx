@@ -21,7 +21,6 @@ function Home() {
           <button>See More</button>
         </Link>
       </div>
-
       <div className="meal-list">
         {state.meals.slice(0, 3).map((meal) => (
           <div key={meal.id}>
