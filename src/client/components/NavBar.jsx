@@ -1,10 +1,11 @@
 import React, {useState} from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from '../assets/images/logo.png'
 import { faAlignJustify, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function NavBar() {
   const [showNavLinks, setShowNavLinks] = useState(false);
+  const { pathname } = useLocation();
     return (
       <nav className="navbar">
         <div className="leftSide">
@@ -15,15 +16,27 @@ function NavBar() {
 
         <div className="rightSide">
           <div className="nav-links" id={showNavLinks ? "hidden" : ""}>
-            <Link to="/" onClick={() => setShowNavLinks(!showNavLinks)}>
+            <Link
+              className={pathname === "/" ? "active-link" : ""}
+              to="/"
+              onClick={() => setShowNavLinks(!showNavLinks)}
+            >
               Home
             </Link>
 
-            <Link to="/meals" onClick={() => setShowNavLinks(!showNavLinks)}>
+            <Link
+              className={pathname === "/meals" ? "active-link" : ""}
+              to="/meals"
+              onClick={() => setShowNavLinks(!showNavLinks)}
+            >
               Meals
             </Link>
 
-            <Link to="/reviews" onClick={() => setShowNavLinks(!showNavLinks)}>
+            <Link
+              className={pathname === "/reviews" ? "active-link" : ""}
+              to="/reviews"
+              onClick={() => setShowNavLinks(!showNavLinks)}
+            >
               Reviews
             </Link>
           </div>
